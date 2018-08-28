@@ -1,0 +1,68 @@
+Converting Wordpress site to Dynamic
+
+Download Wordpress from https://wordpress.org/download/
+Unzip the folder, rename it to what you want it to be called as the project and put it in the htdocs folder
+
+Download a starter theme from http://underscores.me - this is a baseline theme that is a starting point it saves time.
+Put this into a folder with the name that you want - put it in the Xamp directory htdocs (will need this later)
+
+Turn on Xamp and navigate to PHP admin
+Create a new database (remember what you call it)
+Create an admin user in the new database:
+
+database name: bootstrap2wordpress2
+DB_USER: bootman
+DB_PASSWORD: admin
+
+Table_prefix = 'wp_' by default - change it to something else for production sites. like dbbs_
+
+Navigate to localhost http://localhost/FOLDERNAME/ (folder name of wordpress files not the underscores.me files) 
+- Enter in the details you are asked for taken from database creation steps.
+Click button to check connection to the database. Once successful - This step is creating the wp-config.php file (you could also manually update the
+wp-config-sample.php file and rename it to wp-config.php file - I've had more succcess letting wordpress create it on it's own.
+
+Now click on install which will install Wordpress.
+
+Once installed you should be able to log into wordpress: http://localhost/b2w2/wp-admin/ - replace b2w2 with folder you have
+
+login with user admin: Cal1f0rn1a3! - You should be taken to the Wordpress dashboard.
+
+Install underscores theme: - Drop the underscores theme folder downloaded earlier into the Wordpress installed wp-content/themes folder.
+This theme should then show up in the Wordpress Dashboard under Appearance/Themes
+Activate the theme - Click on the theme and hit activate. (note there isn't an image for the theme to start with).
+
+
+MAKE IT Dynamic
+
+First go into header.php and remove the whole header section and replace it with the header section taken from the index.html file of the static site.  There is a known issue where you need to use
+the class: class-wp-bootstrap-navwalker.php - which is a file you can download from my repository.
+
+
+
+	<!-- HEADER -->
+	<header class="site-header">
+
+			<!-- NAVBAR -->
+			<nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+					<div class="container">
+						<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+						<a class="navbar-brand" href="/"><img src="<?php bloginfo('stylesheet_directory');?>/assets/img/logo.png" alt="Bootstrap to WordPress"></a>
+
+							<?php
+								wp_nav_menu( array(
+									'menu' 	=> 'primary',
+									'depth'						=> '2',
+									'container' 			=> 'nav',
+									'container_class' => 'collapse navbar-collapse',
+									'menu_class'			=> 'nav navbar-nav ml-auto',
+									'fallback_cb'       => 'wp_bootstrap_navwalker::fallback',
+        					'walker'            => new wp_bootstrap_navwalker()
+
+								) );
+
+							 ?>
+
+
+						</div>
+			</nav>
+	</header>
